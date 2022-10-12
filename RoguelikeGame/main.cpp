@@ -1,20 +1,20 @@
-#include "SDL.h"
+#include "Game.h"
 #undef main
+
+Game* game = nullptr;
 
 int main()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+	game = new Game();
 
-	SDL_SetRenderDrawColor(renderer, 46, 158, 78, 255);
+	game->Init("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, false);
 
-	SDL_RenderClear(renderer);
+	while (game->Running())
+	{
+		game->HandleEvents();
+		game->Update();
+		game->Render();
+	}
 
-	SDL_RenderPresent(renderer);
-
-	SDL_Delay(5000);
-
-
-	return 0;
+	game->Clean();
 }
