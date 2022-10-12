@@ -48,12 +48,13 @@ public:
 	{
 		for (auto& c : components)
 			c->Update();
+	}
 
+	void Draw()
+	{
 		for (auto& c : components)
 			c->Draw();
 	}
-
-	void Draw(){}
 
 	void Destroy() { active = false; }	
 
