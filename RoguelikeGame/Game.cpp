@@ -1,8 +1,8 @@
 #include "Game.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 
-SDL_Texture* playerTex;
-SDL_Rect srcR, destR;
+GameObject* player;
 
 Game::Game(){}
 Game::~Game(){}
@@ -17,22 +17,22 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		_window = SDL_CreateWindow(title, xPos, yPos, wighth, height, flags);
+		window = SDL_CreateWindow(title, xPos, yPos, wighth, height, flags);
 		
-		_renderer = SDL_CreateRenderer(_window, -1, 0);
-		if (_renderer)
+		renderer = SDL_CreateRenderer(window, -1, 0);
+		if (renderer)
 		{
-			SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		}
 		
-		_isRunning = true;
+		isRunning = true;
 	}
 	else
 	{
-		_isRunning = false;
+		isRunning = false;
 	}
 	
-	playerTex = TextureManager::LoadTexture("Assets/player.png", _renderer);
+	player = new GameObject("Assets/player.png", renderer, 0, 0);
 }
 
 void Game::HandleEvents()
@@ -43,9 +43,8 @@ void Game::HandleEvents()
 	switch (event.type)
 	{
 	case SDL_QUIT:
-		_isRunning = false;
+		isRunning = false;
 		break;
-
 
 	default:
 		break;
@@ -54,24 +53,21 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-	_count++;
-
-	destR.h = 64;
-	destR.w = 64;
-	destR.x = _count;
-
+	player->Update();
 }
 
 void Game::Render()
 {
-	SDL_RenderClear(_renderer);
-	SDL_RenderCopy(_renderer, playerTex, NULL, &destR);
-	SDL_RenderPresent(_renderer); 
+	SDL_RenderClear(renderer);
+
+	player->Render();
+
+	SDL_RenderPresent(renderer); 
 }
 
 void Game::Clean()
 {
-	SDL_DestroyWindow(_window);
-	SDL_DestroyRenderer(_renderer);
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }

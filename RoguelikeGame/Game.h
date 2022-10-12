@@ -16,12 +16,12 @@ public:
 	void Render();
 	void Clean();
 
-	bool Running() { return _isRunning; }
+	bool Running() { return isRunning; }
 
 private:
-	int _count = 0;
-	bool _isRunning;
-	SDL_Window* _window;
-	SDL_Renderer* _renderer;
+	int count = 0;
+	bool isRunning;
+	SDL_Window* window;
+	SDL_Renderer* renderer;
 };
 
