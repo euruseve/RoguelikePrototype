@@ -1,10 +1,19 @@
+#include <iostream>
+
 #include "Game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
 #include "Map.h"
 
+#include "ECS.h"
+#include "Components.h"
+
+
 GameObject* player;
 Map* map;
+
+Manager manager;
+auto& newPlayer(manager.AddEntity());
 
 Game::Game(){}
 Game::~Game(){}
@@ -38,6 +47,9 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 	
 	player = new GameObject("Assets/player.png", 0, 0);
 	map = new Map();
+
+	newPlayer.AddComponent<PositionComponent>();
+	
 }
 
 void Game::HandleEvents()
@@ -59,6 +71,10 @@ void Game::HandleEvents()
 void Game::Update()
 {
 	player->Update();
+
+	manager.Update();
+	std::cout << newPlayer.GetComponent<PositionComponent>().X() << "\n";
+	std::cout << newPlayer.GetComponent<PositionComponent>().Y() << "\n";
 }
 
 void Game::Render()
