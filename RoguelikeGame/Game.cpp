@@ -10,6 +10,7 @@
 Map* map;
 
 Manager manager;
+SDL_Event Game::event;
 auto& player(manager.AddEntity());
 
 Game::Game(){}
@@ -48,12 +49,13 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 
 	player.AddComponent<TransformComponent>();
 	player.AddComponent<SpriteComponent>("Assets/player.png");
+	player.AddComponent<KeyBoardController>();
 	
 }
 
 void Game::HandleEvents()
 {
-	SDL_Event event;
+
 	SDL_PollEvent(&event);
 
 	switch (event.type)
@@ -71,6 +73,9 @@ void Game::Update()
 {
 	manager.Refresh();
 	manager.Update();
+
+
+
 }
 
 void Game::Render()
