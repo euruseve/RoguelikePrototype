@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "TextureManager.h"
+#include "Vector2.h"
 #include "Map.h"
 
 #include "Components.h"
@@ -45,7 +46,7 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 
 	//
 
-	player.AddComponent<PositionComponent>();
+	player.AddComponent<TransformComponent>();
 	player.AddComponent<SpriteComponent>("Assets/player.png");
 	
 }
