@@ -13,7 +13,7 @@ int main()
 
 	game = new Game();
 
-	game->Init("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, false);
+	game->Init("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
 
 	while (game->Running())
 	{

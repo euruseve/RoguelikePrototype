@@ -13,6 +13,9 @@ Map* map;
 Manager manager;
 SDL_Event Game::event;
 
+SDL_Rect Game::camera{ 0, 0, 800, 640 };
+
+
 std::vector<ColliderComponent*> Game::colliders;
 
 bool Game::isRunning = false;
@@ -102,15 +105,17 @@ void Game::Update()
 	manager.Refresh();
 	manager.Update();
 
-	Vector2 pVel = player.GetComponent<TransformComponent>().velocity;
-	int pSpeed = player.GetComponent<TransformComponent>().speed;
-	
-	for (auto t : tiles)
-	{
-		t->GetComponent<TileComponent>().dectRect.x += -(pVel.x * pSpeed);
-		t->GetComponent<TileComponent>().dectRect.y += -(pVel.y * pSpeed);
-	}
+	camera.x = player.GetComponent<TransformComponent>().position.x - 400;
+	camera.y = player.GetComponent<TransformComponent>().position.y - 320;
 
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > camera.w)
+		camera.x = camera.w;
+	if (camera.y > camera.h)
+		camera.y = camera.h;
 }
 
 
