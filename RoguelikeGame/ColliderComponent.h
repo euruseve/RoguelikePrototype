@@ -24,6 +24,8 @@ public:
 			entity->AddComponent<TransformComponent>();
 		}
 		transform = &entity->GetComponent<TransformComponent>();
+
+		Game::colliders.push_back(this);
 	}
 
 	void Update() override

@@ -45,6 +45,15 @@ Vector2& Vector2::Divide(const Vector2& vec)
 }
 
 
+Vector2& Vector2::Zero()
+{
+	this->x = 0;
+	this->y = 0;
+
+	return *this;
+}
+
+
 Vector2& operator+(Vector2& v1, const Vector2& v2)
 {
 	return v1.Add(v2);
@@ -86,8 +95,17 @@ Vector2& Vector2::operator/=(const Vector2& vec)
 	return this->Divide(vec);
 }
 
+Vector2& Vector2::operator*(const int& val)
+{
+	this->x *= val;
+	this->y *= val;
+
+	return *this;
+}
+
 
 std::ostream& operator<<(std::ostream& stream, const Vector2& vec)
 {
 	return stream << "(" << vec.x << "," << vec.y << ")";
 }
+

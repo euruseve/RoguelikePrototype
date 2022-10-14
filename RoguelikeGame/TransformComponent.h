@@ -18,14 +18,12 @@ public:
 
 	TransformComponent()
 	{
-		position.x = 0;
-		position.y = 0;
+		position.Zero();
 	}
 
 	TransformComponent(int scale)
 	{
-		position.x = 0;
-		position.y = 0;
+		position.Zero();
 
 		this->scale = scale;
 	}
@@ -50,8 +48,7 @@ public:
 
 	void Init() override
 	{
-		velocity.x = 0;
-		velocity.y = 0;
+		velocity.Zero();
 	}
 
 	void Update() override

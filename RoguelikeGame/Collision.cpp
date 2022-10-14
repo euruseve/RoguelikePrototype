@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include "ColliderComponent.h"
 
 bool Collision::AABB(const SDL_Rect& rectA, const SDL_Rect& rectB)
 {
@@ -12,5 +13,14 @@ bool Collision::AABB(const SDL_Rect& rectA, const SDL_Rect& rectB)
 
     }
 
+    return false;
+}
+
+bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& colB)
+{
+    if (AABB(colA.collider, colB.collider))
+    {
+        return true;
+    }
     return false;
 }
