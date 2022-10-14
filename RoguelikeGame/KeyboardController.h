@@ -24,7 +24,7 @@ public:
 			{
 			case SDLK_w:
 				transform->velocity.y = -1;
-				sprite->Play("Walk");
+				sprite->Play("SWalk");
 				break;
 
 			case SDLK_s:
@@ -42,6 +42,10 @@ public:
 			case SDLK_d:
 				transform->velocity.x = 1;
 				sprite->Play("SWalk");
+				break;
+
+			case SDLK_ESCAPE:
+				Game::isRunning = false;
 				break;
 
 			default:
