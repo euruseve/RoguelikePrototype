@@ -5,5 +5,7 @@
 #include "SpriteComponent.h"
 #include "TextureManager.h"
 #include "KeyboardController.h"
+#include "ColliderComponent.h"
+
 
 

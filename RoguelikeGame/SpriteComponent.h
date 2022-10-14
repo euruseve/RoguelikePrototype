@@ -2,12 +2,19 @@
 
 #include "SDL.h"
 #include "Components.h"
+#include "TextureManager.h"
 
 class SpriteComponent : public Component
 {
 public:
 
 	SpriteComponent() = default;
+
+	~SpriteComponent()
+	{
+		SDL_DestroyTexture(texture);
+	}
+
 	SpriteComponent(const char* path)
 	{
 		SetTexture(path);
@@ -23,9 +30,12 @@ public:
 		transform = &entity->GetComponent<TransformComponent>();
 
 		srcRect.x = srcRect.y = 0;
-		srcRect.w = srcRect.h = 32;
 
-		destRect.w = destRect.h = 64;
+		srcRect.w = transform->width;
+		srcRect.h = transform->height;
+
+		destRect.w = transform->width * transform->scale;
+		destRect.h = transform->height * transform->scale;
 	}
 
 	void Update() override

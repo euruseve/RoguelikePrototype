@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "Vector2.h"
 #include "Map.h"
+#include "Collision.h"
 
 #include "Components.h"
 
@@ -11,7 +12,10 @@ Map* map;
 
 Manager manager;
 SDL_Event Game::event;
+
+
 auto& player(manager.AddEntity());
+auto& wall(manager.AddEntity());
 
 Game::Game(){}
 Game::~Game(){}
@@ -47,9 +51,15 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 
 	//
 
-	player.AddComponent<TransformComponent>();
+	player.AddComponent<TransformComponent>(2);
 	player.AddComponent<SpriteComponent>("Assets/player.png");
 	player.AddComponent<KeyBoardController>();
+	player.AddComponent<ColliderComponent>("Player");
+
+
+	wall.AddComponent<TransformComponent>(300.f, 300.f, 300, 20, 1);
+	wall.AddComponent<SpriteComponent>("Assets/wall.png");
+	wall.AddComponent<ColliderComponent>("Wall");
 	
 }
 
@@ -74,7 +84,11 @@ void Game::Update()
 	manager.Refresh();
 	manager.Update();
 
-
+	if (Collision::AABB(player.GetComponent<ColliderComponent>().collider,
+						wall.GetComponent<ColliderComponent>().collider))
+	{
+		std::cout << "Collide" << std::endl;
+	}
 
 }
 
