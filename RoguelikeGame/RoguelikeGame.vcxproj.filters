@@ -83,5 +83,8 @@
     <ClInclude Include="TileComponent.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
