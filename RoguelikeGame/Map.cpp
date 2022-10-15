@@ -6,14 +6,12 @@
  
 extern Manager manager;
 
-Map::Map(const char* mapFile, int mapScale, int tileSize) : mapFile(mapFile), mapScale(mapScale), tileSize(tileSize)
+Map::Map(std::string tId, int mapScale, int tileSize) : id(tId), mapScale(mapScale), tileSize(tileSize)
 {
 	scaledSize = mapScale * tileSize;
 }
 
-Map::~Map()
-{
-}
+Map::~Map(){}
 
 void  Map::LoadMap(std::string path, int sizeX, int sizeY)
 {
@@ -49,7 +47,7 @@ void  Map::LoadMap(std::string path, int sizeX, int sizeY)
 			if (c == '1')
 			{
 				auto& tcol(manager.AddEntity());
-				tcol.AddComponent<ColliderComponent>("Terrain", x * scaledSize, y * scaledSize, tileSize);
+				tcol.AddComponent<ColliderComponent>("Terrain", x * scaledSize, y * scaledSize, scaledSize);
 				tcol.AddGroup(Game::GroupLabels::COLLIDER);
 			}
 			mapFile.ignore();
@@ -62,6 +60,6 @@ void  Map::LoadMap(std::string path, int sizeX, int sizeY)
 void Map::AddTile(int srcX, int srcY, int xPos, int yPos)
 {
 	auto& tile(manager.AddEntity());
-	tile.AddComponent<TileComponent>(mapFile, srcX, srcY, xPos, yPos, tileSize, mapScale);
+	tile.AddComponent<TileComponent>(id, srcX, srcY, xPos, yPos, tileSize, mapScale);
 	tile.AddGroup(Game::GroupLabels::MAP);
 }

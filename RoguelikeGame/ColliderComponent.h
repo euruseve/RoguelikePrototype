@@ -24,7 +24,7 @@ public:
 	{
 		this->tag = tag;
 		collider.x = x;
-		collider.y = x;
+		collider.y = y;
 		collider.h = collider.w = size;
 	}
 
@@ -39,7 +39,6 @@ public:
 		tex = TextureManager::LoadTexture("Assets/coll.png");
 		srcRect = { 0, 0, 32, 32 };
 		destRect = { collider.x, collider.y, collider.w, collider.h };
-
 	}
 
 	void Update() override

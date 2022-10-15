@@ -5,7 +5,7 @@
 #include "Vector2.h"
 #include "Map.h"
 #include "Collision.h"
-
+#include "AssetManager.h"
 #include "Components.h"
 
 Map* map;
@@ -15,10 +15,11 @@ SDL_Event Game::event;
 
 SDL_Rect Game::camera{ 0, 0, 800, 640 };
 
+AssetManager* Game::assets = new AssetManager(&manager);
+
 bool Game::isRunning = false;
 
 auto& player(manager.AddEntity());
-
 
 Game::Game(){}
 Game::~Game(){}
@@ -50,22 +51,30 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 		isRunning = false;
 	}
 	
-	map = new Map("Assets/terrain.png", 2, 32);
+	assets->AddTexture("terrain", "Assets/terrain.png");
+	assets->AddTexture("player", "Assets/player_anim.png");
+
+	assets->AddTexture("projectile", "Assets/proj.png");
 
 	//
+	map = new Map("terrain", 2, 32);
 	map->LoadMap("Assets/map.map", 25, 20);
 
-	player.AddComponent<TransformComponent>(4);
-	player.AddComponent<SpriteComponent>("Assets/player_anim.png", true);
+	player.AddComponent<TransformComponent>(2);
+	player.AddComponent<SpriteComponent>("player", true);
 	player.AddComponent<KeyBoardController>();
 	player.AddComponent<ColliderComponent>("Player");
 	player.AddGroup(GroupLabels::PLAYER);
 	
+
+	assets->CreateProjectile("projectile", Vector2(600, 600), Vector2(2, 0), 200, 2);
+
 }
 
 auto& tiles(manager.GetGroup(Game::GroupLabels::MAP));
 auto& colliders(manager.GetGroup(Game::GroupLabels::COLLIDER));
 auto& players(manager.GetGroup(Game::GroupLabels::PLAYER));
+auto& projectiles(manager.GetGroup(Game::GroupLabels::PROJECTILE));
 
 void Game::HandleEvents()
 {
@@ -91,11 +100,19 @@ void Game::Update()
 	manager.Update();
 
 	for (auto& c : colliders)
-	{
+	{ 
 		SDL_Rect cCol = c->GetComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
 		{
 			player.GetComponent<TransformComponent>().position = playerPos;
+		}
+	}
+
+	for (auto& p : projectiles)
+	{
+		if (Collision::AABB(player.GetComponent<ColliderComponent>().collider, p->GetComponent<ColliderComponent>().collider))
+		{
+			p->Destroy();
 		}
 	}
 
@@ -127,6 +144,11 @@ void Game::Render()
 	}
 
 	for (auto& p : players)
+	{
+		p->Draw();
+	}
+
+	for (auto& p : projectiles)
 	{
 		p->Draw();
 	}
