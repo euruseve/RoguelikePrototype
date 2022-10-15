@@ -20,6 +20,7 @@ AssetManager* Game::assets = new AssetManager(&manager);
 bool Game::isRunning = false;
 
 auto& player(manager.AddEntity());
+auto& label(manager.AddEntity());
 
 Game::Game(){}
 Game::~Game(){}
@@ -51,10 +52,17 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 		isRunning = false;
 	}
 	
+	if (TTF_Init() == -1)
+	{
+		std::cerr << "TTF error" << std::endl;
+	}
+
 	assets->AddTexture("terrain", "Assets/terrain.png");
 	assets->AddTexture("player", "Assets/player_anim.png");
 
 	assets->AddTexture("projectile", "Assets/proj.png");
+
+	assets->AddFont("arial", "Assets/arial.ttf", 32);
 
 	//
 	map = new Map("terrain", 2, 32);
@@ -66,9 +74,11 @@ void Game::Init(const char* title, int xPos, int yPos, int wighth, int height, b
 	player.AddComponent<ColliderComponent>("Player");
 	player.AddGroup(GroupLabels::PLAYER);
 	
+	SDL_Color color = { 255, 105, 180, 255 };
+	label.AddComponent<UILabel>(30, 10, "I love Yana", "arial", color);
+
 
 	assets->CreateProjectile("projectile", Vector2(600, 600), Vector2(2, 0), 200, 2);
-
 }
 
 auto& tiles(manager.GetGroup(Game::GroupLabels::MAP));
@@ -152,6 +162,8 @@ void Game::Render()
 	{
 		p->Draw();
 	}
+
+	label.Draw();
 
 	SDL_RenderPresent(renderer); 
 }
